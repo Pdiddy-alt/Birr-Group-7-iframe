@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bear Iframes 🐻💡</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #0f172a, #000);
+      color: #f1f5f9;
+      text-align: center;
+      overflow-x: hidden;
+    }
+    header {
+      padding: 1rem;
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+    nav a {
+      margin: 0 8px;
+      color: #94a3b8;
+      text-decoration: none;
+    }
+    nav a:hover { text-decoration: underline; }
+    #intro { padding: 2rem 1rem; }
+    .bear-room {
+      width: 220px;
+      margin: auto;
+      position: relative;
+    }
+    .lightbulb {
+      width: 40px;
+      height: 50px;
+      background: #aaa;
+      border-radius: 50% 50% 40% 40%;
+      margin: auto;
+      margin-bottom: 10px;
+      opacity: 0.4;
+      transition: opacity 1s, box-shadow 1s;
+    }
+    .lightbulb.on {
+      background: #ffd66b;
+      opacity: 1;
+      box-shadow: 0 0 25px #ffd66b;
+    }
+    .bear {
+      width: 100px;
+      height: 100px;
+      background: #cbb59a;
+      border-radius: 50%;
+      margin: auto;
+      position: relative;
+    }
+    .bear::before, .bear::after {
+      content: "";
+      width: 30px;
+      height: 30px;
+      background: #b89f87;
+      border-radius: 50%;
+      position: absolute;
+      top: -10px;
+    }
+    .bear::before { left: -10px; }
+    .bear::after { right: -10px; }
+    .eye {
+      width: 12px;
+      height: 12px;
+      background: black;
+      border-radius: 50%;
+      position: absolute;
+      top: 40px;
+      animation: blink 4s infinite;
+    }
+    .eye.left { left: 30px; }
+    .eye.right { right: 30px; }
+    @keyframes blink {
+      0%, 90%, 100% { transform: scaleY(1); }
+      95% { transform: scaleY(0.1); }
+    }
+    .hidden-content { opacity: 0; transition: opacity 1s; }
+    .show { opacity: 1; }
+    section {
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+    }
+    iframe {
+      width: 100%;
+      height: 350px;
+      border: none;
+      border-radius: 8px;
+    }
+    textarea, input {
+      width: 90%;
+      padding: 8px;
+      margin: 5px 0;
+      border-radius: 5px;
+      border: none;
+    }
+    button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      margin: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button.submit { background: #22c55e; color: black; }
+    button.clear { background: #444; color: white; }
+    footer { font-size: 0.8rem; color: #94a3b8; padding: 1rem; }
+  </style>
+</head>
+<body>
+  <header>
+    Bear Iframes 🐻💡
+    <nav>
+      <a href="#examples">Examples</a>
+      <a href="#summary">Summary</a>
+      <a href="#feedback">Feedback</a>
+    </nav>
+  </header>
+  <section id="intro">
+    <div class="bear-room">
+      <div id="bulb" class="lightbulb"></div>
+      <div class="bear">
+        <div class="eye left"></div>
+        <div class="eye right"></div>
+      </div>
+    </div>
+    <p>Employee bear has an idea 💡 — click the bulb to learn about iframes!</p>
+  </section>
+  <div id="main" class="hidden-content">
+    <section id="examples">
+      <h2>Iframe Examples 🪟</h2>
+      <h3>1️⃣ YouTube Video</h3>
+      <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+      <h3>2️⃣ Google Maps</h3>
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3856.298783057304!2d120.982023!3d15.489929!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397256ff64ec8b5%3A0x8c977a8479a6e5f3!2sPhilippines!5e0!3m2!1sen!2sph!4v1670000000000!5m2!1sen!2sph"></iframe>
+      <h3>3️⃣ Canva Presentation</h3>
+      <iframe src="https://www.canva.com/design/PLACE_YOUR_LINK_HERE/embed"></iframe>
+      <h3>4️⃣ Another Page (Website Embed)</h3>
+      <iframe src="https://example.com"></iframe>
+    </section>
+    <section id="summary">
+      <h2>What’s Inside?</h2>
+      <ul style="text-align:left; display:inline-block;">
+        <li>How iframes work</li>
+        <li>Examples of video, map, and presentation embeds</li>
+        <li>When to use them safely</li>
+      </ul>
+    </section>
+    <section id="feedback">
+      <h2>Student Feedback</h2>
+      <form id="form">
+        <textarea placeholder="What did you learn today?" required></textarea><br>
+        <input type="text" placeholder="Any thoughts? (optional)"><br>
+        <button type="submit" class="submit">Submit</button>
+        <button type="button" class="clear" onclick="document.getElementById('form').reset()">Clear</button>
+      </form>
+      <p id="thanks" style="display:none; color:#22c55e; font-weight:bold;">Thanks! Your response was recorded ✨</p>
+    </section>
+  </div>
+  <footer>
+    Made with 💡 by Bear & Team<br>
+    Upload <b>bear.html</b> → rename to <b>index.html</b> for GitHub Pages 🌐
+  </footer>
+  <script>
+    const bulb = document.getElementById("bulb");
+    const main = document.getElementById("main");
+    bulb.addEventListener("click", () => {
+      bulb.classList.add("on");
+      main.classList.add("show");
+    });
+    const form = document.getElementById("form");
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      document.getElementById("thanks").style.display = "block";
+    });
+  </script>
+</body>
+</html>
