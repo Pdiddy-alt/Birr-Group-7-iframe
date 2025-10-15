@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hi I'm iframes</title>
+  <style>
+    :root{--bg-a:#071028;--bg-b:#0f172a;--card:rgba(255,255,255,0.05);--muted:#94a3b8;--accent:#22c55e;--glass:rgba(255,255,255,0.04);--text:#eef2ff;--radius:12px}
+    [data-theme="light"]{--bg-a:#f8fafc;--bg-b:#eef2ff;--card:rgba(2,6,23,0.06);--muted:#475569;--accent:#0ea5a4;--text:#061124;--glass:rgba(0,0,0,0.04)}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:linear-gradient(120deg,var(--bg-a),var(--bg-b));color:var(--text);-webkit-font-smoothing:antialiased}
+    header{position:sticky;top:0;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);backdrop-filter: blur(6px);padding:10px 14px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(255,255,255,0.02);z-index:30}
+    .container{max-width:980px;margin:0 auto;padding:16px}
+    .logo{width:44px;height:44px;border-radius:8px;overflow:hidden;flex:0 0 44px}
+    .logo img{width:100%;height:100%;object-fit:contain;transition:transform .45s ease}
+    .logo img:hover{transform:rotate(12deg) scale(1.02)}
+    .brand{font-weight:700}
+    nav{margin-left:auto;display:flex;gap:10px;align-items:center}
+    nav a{padding:6px 8px;border-radius:8px;color:var(--muted);font-size:14px}
+    nav a:hover{background:var(--glass);color:var(--text)}
+    .toggle{cursor:pointer;padding:6px 8px;border-radius:8px;background:var(--glass)}
+    main{position:relative;z-index:5;padding:8px 12px 80px}
+    .page-bg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.06;background:
+      radial-gradient(circle at 10% 20%, rgba(255,255,255,0.02) 0, transparent 20%),
+      radial-gradient(circle at 80% 80%, rgba(255,255,255,0.02) 0, transparent 20%);}
+    /* Intro */
+    #intro{display:flex;flex-direction:column;gap:12px;align-items:center;padding:18px 0}
+    .bear-room{width:240px;position:relative;display:flex;flex-direction:column;align-items:center}
+    .lightbulb{width:56px;height:72px;background:#bdbdbd;border-radius:40px;margin:0 auto 8px;box-shadow:inset 0 -10px 18px rgba(0,0,0,0.22);transition:all .45s ease;cursor:pointer}
+    .lightbulb.on{background:#fff6b5;box-shadow:0 0 28px 10px #fff6b5}
+    .bulb-cord{width:4px;height:80px;background:rgba(0,0,0,.35);margin-top:8px}
+    .bear{width:140px;height:140px;border-radius:50%;background:linear-gradient(180deg,#d6b68f,#b88656);position:relative;display:flex;align-items:center;justify-content:center;overflow:visible}
+    .bear::before,.bear::after{content:'';width:36px;height:36px;border-radius:50%;background:linear-gradient(180deg,#ab7a52,#8a5a3a);position:absolute;top:-12px}
+    .bear::before{left:14px}.bear::after{right:14px}
+    .face{position:relative;width:90px;height:60px}
+    .eye{width:14px;height:14px;background:#111;border-radius:50%;position:absolute;top:6px;animation:blink 5s infinite;transform-origin:center}
+    .eye.left{left:12px}.eye.right{right:12px}
+    @keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.11)}}
+    .arm{position:absolute;width:36px;height:84px;background:linear-gradient(180deg,#d6b68f,#b88656);border-radius:20px;bottom:-20px;transform-origin:top center;left:50%;transform:translateX(-50%) rotate(-20deg);transition:transform .35s ease}
+    .arm.pull{transform:translateX(-50%) rotate(10deg)}
+    /* cards */
+    .card{background:var(--card);border-radius:12px;padding:14px;margin:14px 0;box-shadow:0 10px 30px rgba(0,0,0,0.2);opacity:0;transform:translateY(18px);transition:all .55s cubic-bezier(.2,.9,.2,1)}
+    .card.show{opacity:1;transform:none}
+    h1,h2,h3{margin:8px 0}
+    p{margin:6px 0;color:var(--muted)}
+    pre{background:rgba(0,0,0,0.14);padding:12px;border-radius:8px;overflow:auto;font-family:monospace;color:var(--text);font-size:13px}
+    code{background:rgba(0,0,0,0.12);padding:2px 6px;border-radius:6px;font-family:monospace}
+    .examples{display:grid;grid-template-columns:1fr;gap:12px}
+    @media(min-width:760px){.examples{grid-template-columns:1fr 1fr}}
+    iframe{width:100%;height:260px;border:0;border-radius:8px;background:#fff}
+    .grid-2{display:grid;gap:12px;grid-template-columns:1fr}
+    @media(min-width:760px){.grid-2{grid-template-columns:1fr 1fr}}
+    .chip{padding:10px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03)}
+    .timeline{display:flex;gap:12px;overflow:auto;padding:8px 6px}
+    .timeline-item{min-width:220px;background:rgba(255,255,255,0.03);padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
+    .dot{width:12px;height:12px;border-radius:50%;background:var(--accent);margin-right:8px}
+    .quiz{display:flex;flex-direction:column;gap:8px}
+    .quiz button{background:transparent;border:1px solid rgba(255,255,255,0.08);color:var(--text);padding:8px;border-radius:8px;cursor:pointer}
+    .quiz button.correct{border-color:green;background:linear-gradient(90deg, rgba(34,197,94,0.12), rgba(34,197,94,0.05))}
+    .quiz button.wrong{border-color:#ff5c5c;background:linear-gradient(90deg, rgba(255,92,92,0.08), rgba(255,92,92,0.02))}
+    .muted{color:var(--muted);font-size:14px}
+    .kbd{background:rgba(0,0,0,0.2);padding:3px 6px;border-radius:6px;font-family:monospace}
+    footer{padding:18px 12px;color:var(--muted);text-align:center}
+    /* main content hidden until reveal */
+    #mainContent {opacity:0;pointer-events:none;transition:opacity .6s ease}
+    #mainContent.revealed {opacity:1;pointer-events:auto}
+    @media(max-width:420px){.bear{width:110px;height:110px}.lightbulb{width:48px;height:62px}iframe{height:180px}}
+  </style>
+</head>
+<body data-theme="dark">
+  <div class="page-bg" aria-hidden="true"></div>
+
+  <header>
+    <div class="container" style="display:flex;align-items:center;gap:12px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="logo" title="HTML logo"><img src="Html.png" alt="HTML logo" /></div>
+        <div class="brand">Bear Iframes</div>
+      </div>
+      <nav aria-label="Main navigation">
+        <a href="#about">About</a>
+        <a href="#examples">Examples</a>
+        <a href="#quiz">Quiz</a>
+        <a class="toggle" id="themeToggle" role="button" aria-pressed="false" title="Toggle theme">🌓</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- INTRO -->
+    <section id="intro" style="padding-top:18px">
+      <div class="bear-room" aria-hidden="false">
+        <div id="bulb" class="lightbulb" role="button" aria-label="Turn on the light" tabindex="0"></div>
+        <div class="bulb-cord" aria-hidden="true"></div>
+
+        <div class="bear" id="bear" aria-hidden="false">
+          <div class="face" aria-hidden="true">
+            <div class="eye left" aria-hidden="true"></div>
+            <div class="eye right" aria-hidden="true"></div>
+          </div>
+          <div class="arm" id="arm" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <h1 style="margin-top:10px">Hi I'am <span style="color:var(--accent)">iframes</span></h1>
+      <p class="muted">Click the bulb </p>
+    </section>
+
+    <!-- MAIN CONTENT (hidden until reveal) -->
+    <div id="mainContent">
+      <section id="about" class="card" tabindex="0">
+        <h2>What is an &lt;iframe&gt;?</h2>
+        <p class="muted">An <strong>iframe</strong> (inline frame) embeds another HTML document inside your page — like a window to another site or resource.</p>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div class="chip"><strong>Common uses:</strong> videos, maps, forms, widgets, previews.</div>
+          <div class="chip"><strong>Security:</strong> use <code>sandbox</code>, set <code>title</code>, and restrict permissions with <code>allow</code>.</div>
+        </div>
+      </section>
+
+      <section id="history" class="card" tabindex="0">
+        <h2>Short History</h2>
+        <p class="muted">Iframes became common in the late 1990s / early 2000s as a simple method to insert separate HTML contexts into a host page. Modern security options (sandbox, CSP) arrived later.</p>
+        <div class="timeline" aria-hidden="false">
+          <div class="timeline-item"><div class="dot" aria-hidden="true"></div><div><strong>Late 1990s</strong> — early embed techniques appear.</div></div>
+          <div class="timeline-item"><div class="dot" aria-hidden="true"></div><div><strong>2000s</strong> — widgets & video players use iframes widely.</div></div>
+          <div class="timeline-item"><div class="dot" aria-hidden="true"></div><div><strong>2010s+</strong> — sandboxing & CSP improve iframe safety.</div></div>
+        </div>
+      </section>
+
+      <section id="how" class="card" tabindex="0">
+        <h2>How it works</h2>
+        <p class="muted">The parent page uses <code>&lt;iframe src="..."&gt;</code>. The iframe runs in a separate browsing context and loads its own document. Use attributes to control loading and permissions.</p>
+        <pre><code>&lt;iframe src="https://example.com" title="Example" width="600" height="400"&gt;&lt;/iframe&gt;</code></pre>
+      </section>
+
+      <section id="examples" class="card" tabindex="0">
+        <h2>Examples — live</h2>
+        <p class="muted">Try these examples. (If an embed is blocked, the host disallows framing.)</p>
+
+        <div class="examples">
+          <div>
+            <h3 style="margin:6px 0">YouTube</h3>
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube demo" loading="lazy" referrerpolicy="no-referrer"></iframe>
+          </div>
+
+          <div>
+            <h3 style="margin:6px 0">Google Map</h3>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3856.298783057304!2d120.982023!3d15.489929!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397256ff64ec8b5%3A0x8c977a8479a6e5f3!2sPhilippines!5e0!3m2!1sen!2sph!4v1670000000000!5m2!1sen!2sph" title="Map demo" loading="lazy"></iframe>
+          </div>
+
+          <div>
+            <h3 style="margin:6px 0">Inline HTML (srcdoc)</h3>
+            <iframe srcdoc="<h3 style='text-align:center;color:var(--accent);margin:8px 0'>Hello from inside!</h3><p style='text-align:center;margin:0;color:var(--muted)'>This page is created via srcdoc.</p>" title="srcdoc sample"></iframe>
+          </div>
+
+          <div>
+            <h3 style="margin:6px 0">Canva Presentation</h3>
+            <iframe src="https://www.canva.com/design/DAGypbG7AjI/03L-6UBQgV7VyJdIqvp4eQ/view?utm_content=DAGypbG7AjI&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h5be5081235" title="Canva embed" loading="lazy"></iframe>
+          </div>
+        </div>
+        <p class="muted" style="margin-top:8px">Note: Some sites block being framed via X-Frame-Options or CSP headers.</p>
+      </section>
+
+      <section class="card" tabindex="0">
+        <h2>Pros & Cons</h2>
+        <div class="grid-2">
+          <div class="chip"><strong>Pros</strong><ul><li>Easy embedding</li><li>Separates context</li><li>Good for third-party widgets</li></ul></div>
+          <div class="chip"><strong>Cons</strong><ul><li>Performance cost</li><li>Accessibility pitfalls</li><li>Security risks if untrusted</li></ul></div>
+        </div>
+      </section>
+
+      <section class="card" tabindex="0">
+        <h2>Code Snippets</h2>
+        <h3>Responsive video</h3>
+        <pre><code>&lt;div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden"&gt;
+  &lt;iframe src="https://www.youtube.com/embed/ID" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;</code></pre>
+
+        <h3>Sandbox</h3>
+        <pre><code>&lt;iframe src="https://example.com" sandbox="allow-scripts allow-same-origin" title="Sandboxed"&gt;&lt;/iframe&gt;</code></pre>
+      </section>
+
+      <section id="quiz" class="card" tabindex="0">
+        <h2>Mini Quiz</h2>
+        <div class="quiz" id="quizArea">
+          <div class="q"><strong>1)</strong> Which attribute requests lazy loading?<br>
+            <button data-correct="loading">loading</button>
+            <button>defer</button>
+            <button>async</button>
+          </div>
+
+          <div class="q"><strong>2)</strong> Which tag creates an inline frame?<br>
+            <button>&lt;embed&gt;</button>
+            <button data-correct="iframe">&lt;iframe&gt;</button>
+            <button>&lt;object&gt;</button>
+          </div>
+
+          <div class="q"><strong>3)</strong> Which attribute restricts iframe behavior?<br>
+            <button data-correct="sandbox">sandbox</button>
+            <button>allow</button>
+            <button>referrer</button>
+          </div>
+
+          <p id="quizFeedback" class="muted">Click the options — correct answers will turn green.</p>
+        </div>
+      </section>
+
+      <section id="feedback" class="card" tabindex="0">
+        <h2>What did you learn?</h2>
+        <form id="feedbackForm">
+          <textarea name="notes" rows="4" placeholder="One sentence..."></textarea><br>
+          <input type="text" name="name" placeholder="Your name (optional)"><br>
+          <button class="submit" type="submit">Send feedback</button>
+        </form>
+        <p id="thanks" style="display:none;color:var(--accent);font-weight:600;margin-top:8px">Thanks! Your response was recorded ✨</p>
+      </section>
+    </div><!-- /mainContent -->
+
+  </main>
+
+  <footer><div class="container muted">Created by Group 7 - 10 Pythagoras • Put <b>Html.png</b> in the same folder and rename to <span class="kbd">index.html</span> for GitHub Pages.</div></footer>
+
+  <script>
+    (function(){
+      const bulb = document.getElementById('bulb');
+      const mainContent = document.getElementById('mainContent');
+      const cards = document.querySelectorAll('.card');
+      const arm = document.getElementById('arm');
+      const themeToggle = document.getElementById('themeToggle');
+      const body = document.body;
+
+      // online click sound
+      const clickSound = new Audio('https://actions.google.com/sounds/v1/buttons/button_press.ogg');
+      clickSound.volume = 0.7;
+
+      // reveal sequence: arm movement, sound, bulb flicker, reveal mainContent and stagger cards
+      function reveal() {
+        if (mainContent.classList.contains('revealed')) return;
+        // small arm pull animation
+        arm.classList.add('pull');
+        // play sound (best-effort)
+        clickSound.currentTime = 0;
+        clickSound.play().catch(()=>{});
+        // bulb flicker
+        bulb.classList.add('on');
+        setTimeout(()=> bulb.classList.remove('on'), 180);
+        setTimeout(()=> bulb.classList.add('on'), 360);
+        // reveal main content container
+        setTimeout(()=> mainContent.classList.add('revealed'), 520);
+        // stagger card reveals
+        cards.forEach((c,i)=> setTimeout(()=> c.classList.add('show'), 700 + i*110));
+        // reset arm after short time (so it "pulls" then returns)
+        setTimeout(()=> arm.classList.remove('pull'), 900);
+      }
+
+      bulb.addEventListener('click', reveal);
+      bulb.addEventListener('keydown', (e)=> { if (e.key === 'Enter' || e.key === ' ') reveal(); });
+
+      // intersection observer as fallback for users who scroll without clicking
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add('show');
+        });
+      }, {threshold: 0.12});
+      cards.forEach(c => io.observe(c));
+
+      // quiz handling
+      const quizArea = document.getElementById('quizArea');
+      quizArea.addEventListener('click', (e) => {
+        const b = e.target.closest('button');
+        if (!b) return;
+        const q = b.closest('.q');
+        if (q.dataset.answered) return;
+        const correct = !!b.dataset.correct;
+        b.classList.add(correct ? 'correct' : 'wrong');
+        q.dataset.answered = '1';
+      });
+
+      // feedback
+      const form = document.getElementById('feedbackForm');
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        document.getElementById('thanks').style.display = 'block';
+        form.reset();
+      });
+
+      // theme toggle
+      themeToggle.addEventListener('click', () => {
+        const current = body.getAttribute('data-theme') || 'dark';
+        body.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+      });
+
+      // respect reduced motion preference
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.querySelectorAll('*').forEach(el => el.style.transition = 'none');
+      }
+    })();
+  </script>
+</body>
+</html>
